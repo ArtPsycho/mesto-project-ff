@@ -1,7 +1,7 @@
 import '../pages/index.css';
 import { initialCards } from './cards';
 import { openPopup, closePopup } from './modal';
-import { addCard, likeCard, removeCard } from './card';
+import { createCard, likeCard, removeCard } from './card';
 
 
 // DOM узлы
@@ -72,7 +72,7 @@ addCloseButton.addEventListener('click', () => {
 function addFormSubmit(event) {
   event.preventDefault();
   const cardValue = { name: addNameInput.value, link: addLinkInput.value};
-  placesList.prepend(addCard(cardValue, removeCard, likeCard, imageOpen));
+  placesList.prepend(createCard(cardValue, removeCard, likeCard, openImage));
 
   addForm.reset();
   closePopup(addPopup);
@@ -92,7 +92,7 @@ const imageCard = imagePopup.querySelector('.popup__image');
 const imageCaption = imagePopup.querySelector('.popup__caption');
 
 // Функция открытия модального окна "Картинка"
-function imageOpen(cardValue) {
+function openImage(cardValue) {
   imageCaption.textContent = cardValue.name;
   imageCard.src = cardValue.link;
   imageCard.alt = cardValue.name;
@@ -111,7 +111,7 @@ imageCloseButton.addEventListener('click', () => {
 // Вывод карточек на страницу
 function renderList() {
   initialCards.forEach((cardValue) => {
-    placesList.append(addCard(cardValue, removeCard, likeCard, imageOpen));
+    placesList.append(createCard(cardValue, removeCard, likeCard, openImage));
   });
 }
 

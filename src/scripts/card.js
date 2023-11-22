@@ -1,5 +1,5 @@
 // Функция создания карточки
-function addCard (cardValue, remove, likeCard, imageOpen) {
+function createCard (cardValue, remove, likeCard, openImage) {
   
   // Темплейт карточки  
   const cardTemplate = document.querySelector('#card-template').content;
@@ -21,7 +21,7 @@ function addCard (cardValue, remove, likeCard, imageOpen) {
   // Открытие карточки
   const imageClick = cardElement.querySelector('.card__image');
   imageClick.addEventListener('click', () => {
-    imageOpen(cardValue);
+    openImage(cardValue);
   });
 
   return cardElement;
@@ -41,5 +41,5 @@ function likeCard (event) {
 }
 
 
-export { addCard, likeCard, removeCard };
+export { createCard, likeCard, removeCard };
 

@@ -25,7 +25,7 @@ function closePopupEsc(event) {
 // Фунция закрытия модального окна через overlay
 function closePopupOverlay(event) {
   if (event.target === event.currentTarget) {
-    closePopup(document.querySelector('.popup_is-opened'))
+    closePopup(event.currentTarget);
   };
 }
 
