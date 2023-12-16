@@ -8,7 +8,6 @@ import { getInitialCards, getUserData, changeUserData, changeUserImage, postCard
 const content = document.querySelector('.content');
 const placesList = document.querySelector('.places__list');
 
-
 let userId;
 
 // Конфигурация валидации форм
@@ -34,7 +33,6 @@ const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 const editPopupSaveButton = editForm.querySelector('.popup__button');
 
-
 // Открытие модального окна "Редактирование профиля"
 editOpenButton.addEventListener('click', () => {
   openPopup(editPopup);
@@ -57,6 +55,7 @@ function editFormSubmit(event) {
     .then(() => {
       profileTitle.textContent = editNameInput.value;
       profileDescription.textContent = editDescriptionInput.value;
+      closePopup(editPopup);
     })
     .catch((error) => {
       console.log(error);
@@ -64,16 +63,10 @@ function editFormSubmit(event) {
     .finally(() => {
       editPopupSaveButton.textContent = 'Сохранение';
     });
-
-  closePopup(editPopup);
 }
 
 // Прикрепление обработчика события к форме модального окна "Редактирование профиля"
 editForm.addEventListener('submit', editFormSubmit); 
-
-
-
-
 
 // Редактирование картинки профиля
 const avatarPopup = document.querySelector('.popup_type_avatar');
@@ -103,6 +96,7 @@ function avatarFormSubmit(event) {
   changeUserImage(avatarInput.value)
   .then(() => {
     profileImage.style = `background-image: url('${avatarInput.value}')`;
+    closePopup(avatarPopup);
   })
   .catch((error) => {
     console.log(error);
@@ -110,15 +104,10 @@ function avatarFormSubmit(event) {
   .finally(() => {
     avatarPopupSaveButton.textContent = 'Сохранение';
   })
-  closePopup(avatarPopup);
 }
 
 // Прикрепление обработчика события к форме модального окна "Обновление аватара"
 avatarForm.addEventListener('submit', avatarFormSubmit);
-
-
-
-
 
 // Добавление карточки//
 
@@ -131,6 +120,7 @@ const addNameInput = addForm.elements['place-name'];
 const addLinkInput = addForm.elements['link'];
 const addPopupSaveButton = addForm.querySelector('.popup__button');
 console.log(addPopupSaveButton);
+
 // Открытие модального окна "Добавление карточки"
 addOpenButton.addEventListener('click', () => {
   addForm.reset();
@@ -151,6 +141,8 @@ function addFormSubmit(event) {
   postCard(addNameInput.value, addLinkInput.value)
     .then((cardValue) => {
       placesList.prepend(createCard(cardValue, userId, removeCard, likeCard, openImage));
+      addForm.reset();
+      closePopup(addPopup);
     })
     .catch((error) => {
       console.log(error);
@@ -158,18 +150,10 @@ function addFormSubmit(event) {
     .finally(() => {
       addPopupSaveButton.textContent = 'Сохранить';
     })
-
-  // const cardValue = { name: addNameInput.value, link: addLinkInput.value};
-  // placesList.prepend(createCard(cardValue, userId, removeCard, likeCard, openImage));
-
-  addForm.reset();
-  closePopup(addPopup);
 }
 
 // Прикрепление обработчика события к форме модального окна "Добавление карточки"
 addForm.addEventListener('submit', addFormSubmit);
-
-
 
 // Открытие картинки
 
@@ -192,35 +176,24 @@ imageCloseButton.addEventListener('click', () => {
   closePopup(imagePopup);
 })
 
-
-// *Вывод на страницу первоначальная версия*
-
-// // Вывод карточек на страницу
-// function renderList() {
-//   initialCards.forEach((cardValue) => {
-//     placesList.append(createCard(cardValue, removeCard, likeCard, openImage));
-//   });
-// }
-
-// // renderList();
-
-
 // Валидация форм
 enableValidation(validationConfig);
 
-
 Promise.all([getInitialCards(), getUserData()])
-.then(([initialCardsData, userData]) => {
-  userId = userData._id;
+  .then(([initialCardsData, userData]) => {
+    userId = userData._id;
 
-  profileTitle.textContent = userData.name;
-  profileDescription.textContent = userData.about;
-  profileImage.style = `background-image: url('${userData.avatar}')`;
+    profileTitle.textContent = userData.name;
+    profileDescription.textContent = userData.about;
+    profileImage.style = `background-image: url('${userData.avatar}')`;
 
-  initialCardsData.forEach((cardValue) => {
-    placesList.append(createCard(cardValue, userId, removeCard, likeCard, openImage));
-  });
-})
+    initialCardsData.forEach((cardValue) => {
+      placesList.append(createCard(cardValue, userId, removeCard, likeCard, openImage));
+    });
+  })
+  .catch((error) => {
+    console.log(error);
+  })
 
 
 

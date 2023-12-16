@@ -4,8 +4,14 @@ const config = {
     authorization: '02d618db-a613-41d9-960e-ca9498e313c1',
     'Content-Type': 'application/json'
   },
-}
+};
 
+function checkResponse(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+};
 
 // Получение данных карточек
 export const getInitialCards = () => {
@@ -13,20 +19,8 @@ export const getInitialCards = () => {
     method: 'GET',
     headers: config.headers
   })
-    .then(res => {      
-      if (res.ok) {
-        return res.json();
-      }      
-
-    // Если ошибка, отклоняем промис
-    return Promise.reject(`Ошибка: ${res.status}`)
-    })
-}
-
-
-// Вывод массива карточке в консоль
-console.log(getInitialCards());
-
+  .then(res => checkResponse(res));
+};
 
 // Получение данных профиля
 export const getUserData = () => {
@@ -34,15 +28,8 @@ export const getUserData = () => {
     method: 'GET',
     headers: config.headers
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-
-    // Если ошибка, отклоняем промис
-    return Promise.reject(`Ошибка: ${res.status}`)
-    });
-}
+  .then(res => checkResponse(res));
+};
 
 // Смена данных профиля
 export function changeUserData(profileTitle, profileDescription) {
@@ -54,13 +41,8 @@ export function changeUserData(profileTitle, profileDescription) {
         about: profileDescription
     })
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-  }
-  return Promise.reject(`Ошибка: ${res.status}`)
-  });
-}
+  .then(res => checkResponse(res));
+};
 
 // Смена аватара профиля
 export function changeUserImage(profileImage) {
@@ -71,15 +53,8 @@ export function changeUserImage(profileImage) {
       avatar: profileImage
     })
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-  }
-  return Promise.reject(`Ошибка: ${res.status}`)
-  });
-}
-
-
+  .then(res => checkResponse(res));
+};
 
 // Постановка лайка
 export function setLike(cardId) {
@@ -87,12 +62,7 @@ export function setLike(cardId) {
     method: 'PUT',
     headers: config.headers,
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-  }
-  return Promise.reject(`Ошибка: ${res.status}`)
-  })
+  .then(res => checkResponse(res));
 };
 
 // Удаление лайка
@@ -101,14 +71,8 @@ export function removeLike(cardId) {
     method: 'DELETE',
     headers: config.headers,
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-  }
-  return Promise.reject(`Ошибка: ${res.status}`)
-  })
+  .then(res => checkResponse(res));
 };
-
 
 // Создание карточки
 export function postCard(placeName, placeLink) {
@@ -120,12 +84,7 @@ export function postCard(placeName, placeLink) {
       link: placeLink
     })
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-  }
-  return Promise.reject(`Ошибка: ${res.status}`)
-  })
+  .then(res => checkResponse(res));
 };
 
 // Удаление карточки
@@ -134,10 +93,5 @@ export function deleteCard(cardId) {
       method: 'DELETE',
       headers: config.headers
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-  }
-  return Promise.reject(`Ошибка: ${res.status}`)
-  })
+  .then(res => checkResponse(res));
 };

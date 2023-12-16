@@ -1,7 +1,5 @@
 import { setLike, removeLike, deleteCard } from "./api";
 
-let checkIsLiked;
-
 // Функция создания карточки
 function createCard (cardValue, userId, removeCard, likeCard, openImage) {
 
@@ -11,10 +9,10 @@ function createCard (cardValue, userId, removeCard, likeCard, openImage) {
   
   // Присвоение значений
   cardElement.querySelector('.card__title').textContent = cardValue.name;
-  cardElement.querySelector('.card__image').src = cardValue.link;
-  cardElement.querySelector('.card__image').alt = cardValue.name;
+  const cardImage = cardElement.querySelector('.card__image');
+  cardImage.src = cardValue.link;
+  cardImage.alt = cardValue.name;
 
-  
   // Удаление карточки
   const deleteButton = cardElement.querySelector('.card__delete-button');
   deleteButton.addEventListener('click', (event) => removeCard(event, cardValue));
@@ -44,7 +42,7 @@ function createCard (cardValue, userId, removeCard, likeCard, openImage) {
   }
   
   // Открытие карточки
-  const imageClick = cardElement.querySelector('.card__image');
+  const imageClick = cardImage;
 
   imageClick.addEventListener('click', () => {
     openImage(cardValue);
@@ -65,7 +63,6 @@ function removeCard (event, cardValue) {
       console.log(error);
     })  
 };
-
 
 // Наличие лайка от пользователя
 function isLikedByUser(cardValue, userId) {
@@ -100,6 +97,5 @@ function likeCard(event, cardValue, userId) {
     })
   }
 }
-
 
 export { createCard, likeCard, removeCard };
